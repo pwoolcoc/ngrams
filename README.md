@@ -1,5 +1,7 @@
 # N-grams
 
+[![Build Status](https://travis-ci.org/pwoolcoc/ngrams.svg)](https://travis-ci.org/pwoolcoc/ngrams)
+
 This crate takes a sequence of tokens and generates an n-gram for it.
 For more information about n-grams, check wikipedia: https://en.wikipedia.org/wiki/N-gram
 
