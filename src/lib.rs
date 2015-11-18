@@ -1,7 +1,6 @@
 //! Ngrams
 //!
-//! Produce ngram sequences from inputs, and calculate the similarity
-//! between two items using their ngram similarity.
+//! Produce n-gram sequences from a sequence of tokens
 //!
 //! ## Examples
 //!
