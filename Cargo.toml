@@ -1,6 +1,6 @@
 [package]
 name = "ngrams"
-version = "0.1.0"
+version = "0.1.1"
 authors = ["Paul Woolcock <paul@woolcock.us>"]
 repository = "https://github.com/pwoolcoc/ngrams.git"
 homepage = "https://pwoolcoc.github.io/ngrams"
