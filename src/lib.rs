@@ -112,6 +112,12 @@ impl Pad for Vec<u8> {
     }
 }
 
+impl Pad for char {
+    fn symbol() -> Self {
+        WORD_SEP.chars().next().unwrap()
+    }
+}
+
 struct Padded<'a, T: 'a + Pad + fmt::Debug + Clone> {
     source: Box<Iterator<Item = T> + 'a>,
     len: usize,
