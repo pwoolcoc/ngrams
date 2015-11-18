@@ -52,6 +52,7 @@ impl<'a, T: 'a + Pad + fmt::Debug + Clone, U: 'a + Iterator<Item=T>> Ngram<'a, T
 pub struct Ngrams<'a, T: 'a + Pad + fmt::Debug + Clone> {
     source: Box<Iterator<Item = T> + 'a>,
     num: usize,
+    memsize: usize,
     memory: VecDeque<T>,
 }
 
@@ -65,10 +66,12 @@ impl<'a, T: 'a + Pad + fmt::Debug + Clone> Ngrams<'a, T> {
     /// The source for the `Ngrams` is expected to be pre-tokenized, this library
     /// does not make any decisions regarding how your input should be tokenized.
     pub fn new<V: 'a + Iterator<Item = T>>(source: V, n: usize) -> Ngrams<'a, T> {
+        let memsize = n - 1;
         Ngrams {
             source: Box::new(Padded::new(source, n)),
             num: n,
-            memory: VecDeque::with_capacity((n - 1)),
+            memsize: memsize,
+            memory: VecDeque::with_capacity(memsize),
         }
     }
 
@@ -79,7 +82,7 @@ impl<'a, T: 'a + Pad + fmt::Debug + Clone> Iterator for Ngrams<'a, T> {
 
     fn next(&mut self) -> Option<Self::Item> {
         // Fill the memory
-        while self.memory.len() < self.memory.capacity() {
+        while self.memory.len() < self.memsize {
             // Can I unwrap here? I need to make sure that
             // .next() can't return None before .memory is full
             let a = self.source.next().unwrap();
