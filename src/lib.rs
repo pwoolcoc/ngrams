@@ -2,6 +2,40 @@
 //!
 //! Produce ngram sequences from inputs, and calculate the similarity
 //! between two items using their ngram similarity.
+//!
+//! ## Examples
+//!
+//! ```rust
+//! use ngrams::Ngram;
+//!
+//! let grams: Vec<_> = "foo".chars().ngrams(2).collect();
+//! assert_eq!(
+//!     grams,
+//!     vec![
+//!           vec!['\u{2060}', 'f'],
+//!           vec!['f', 'o'],
+//!           vec!['o', 'o'],
+//!           vec!['o', '\u{2060}']
+//!     ]
+//! );
+//! ```
+//!
+//! ```rust
+//! use ngrams::Ngrams; // notice `Ngram` vs `Ngrams`
+//!
+//! let iter = "one two three".split(' ');
+//! let grams: Vec<_> = Ngrams::new(iter, 3).collect();
+//! assert_eq!(
+//!     grams,
+//!     vec![
+//!           vec!["\u{2060}", "\u{2060}", "one"],
+//!           vec!["\u{2060}", "one", "two"],
+//!           vec!["one", "two", "three"],
+//!           vec!["two", "three", "\u{2060}"],
+//!           vec!["three", "\u{2060}", "\u{2060}"],
+//!     ]
+//! );
+//! ```
 
 #![deny(missing_docs,
        missing_debug_implementations, missing_copy_implementations,
@@ -204,8 +238,26 @@ impl<'a, T: 'a + Pad + fmt::Debug + Clone> Iterator for Padded<'a, T> {
 #[cfg(test)]
 mod tests {
 
-    use super::Ngrams;
+    use super::{Ngram, Ngrams};
     use std::string::ToString;
+
+    #[test]
+    fn test_words_iter_adaptor() {
+        let result: Vec<_> = "one two three four five".split(' ').ngrams(4).collect();
+        assert_eq!(
+                result,
+                vec![
+                    vec!["\u{2060}", "\u{2060}", "\u{2060}", "one"],
+                    vec!["\u{2060}", "\u{2060}", "one", "two"],
+                    vec!["\u{2060}", "one", "two", "three"],
+                    vec!["one", "two", "three", "four"],
+                    vec!["two", "three", "four", "five"],
+                    vec!["three", "four", "five", "\u{2060}"],
+                    vec!["four", "five", "\u{2060}", "\u{2060}"],
+                    vec!["five", "\u{2060}", "\u{2060}", "\u{2060}"],
+                ]
+        );
+    }
 
     #[test]
     fn test_words() {
