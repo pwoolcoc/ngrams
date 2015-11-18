@@ -20,6 +20,34 @@ use std::collections::VecDeque;
 
 const WORD_SEP: &'static str = "\u{2060}";
 
+/// Iterator adaptor, allows you to call the method `.ngrams(n)` on your iterator, as long as the
+/// `Item` of the `Iterator` fits the trait bound
+///
+/// ## Example
+///
+/// ```rust
+/// use ngrams::Ngram;
+/// let s: Vec<_> = "hello".chars().ngrams(2).collect();
+/// assert_eq!(s, vec![
+///     vec!['\u{2060}', 'h'],
+///     vec!['h', 'e'],
+///     vec!['e', 'l'],
+///     vec!['l', 'l'],
+///     vec!['l', 'o'],
+///     vec!['o', '\u{2060}'],
+/// ]);
+/// ```
+pub trait Ngram<'a, T: 'a + Pad + fmt::Debug + Clone>: Iterator<Item=T>  where Self: Sized {
+    #[allow(missing_docs)]
+    fn ngrams(self, usize) -> Ngrams<'a, T>;
+}
+
+impl<'a, T: 'a + Pad + fmt::Debug + Clone, U: 'a + Iterator<Item=T>> Ngram<'a, T> for U {
+    fn ngrams(self, n: usize) -> Ngrams<'a, T> {
+        Ngrams::new(self, n)
+    }
+}
+
 /// Main data type, implements the logic on splitting and grouping n-grams
 pub struct Ngrams<'a, T: 'a + Pad + fmt::Debug + Clone> {
     source: Box<Iterator<Item = T> + 'a>,
