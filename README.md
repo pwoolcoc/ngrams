@@ -1,6 +1,7 @@
 # N-grams
 
 [![Build Status](https://travis-ci.org/pwoolcoc/ngrams.svg)](https://travis-ci.org/pwoolcoc/ngrams)
+[![Coverage Status](https://coveralls.io/repos/pwoolcoc/ngrams/badge.svg?branch=master&service=github)](https://coveralls.io/github/pwoolcoc/ngrams?branch=master)
 
 This crate takes a sequence of tokens and generates an n-gram for it.
 For more information about n-grams, check wikipedia: https://en.wikipedia.org/wiki/N-gram
