@@ -108,33 +108,55 @@ impl<'a, T: 'a + Pad + fmt::Debug + Clone> Ngrams<'a, T> {
         }
     }
 
-}
-
-impl<'a, T: 'a + Pad + fmt::Debug + Clone> Iterator for Ngrams<'a, T> {
-  type Item = Vec<T>;
-
-    fn next(&mut self) -> Option<Self::Item> {
-        // Fill the memory
+    fn fill_memory(&mut self) {
         while self.memory.len() < self.memsize {
             // Can I unwrap here? I need to make sure that
             // .next() can't return None before .memory is full
             let a = self.source.next().unwrap();
             self.memory.push_back(a);
         }
+    }
+}
 
+impl<'a, T: 'a + Pad + fmt::Debug + Clone> Iterator for Ngrams<'a, T> {
+    type Item = Vec<T>;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        self.fill_memory();
+
+        self.source.next().map(|n| {
+            let mut result = Vec::with_capacity(self.num);
+
+            for elem in &self.memory {
+                result.push(elem.clone());
+            }
+
+            result.push(n.clone());
+
+            let _ = self.memory.pop_front();
+            self.memory.push_back(n.clone());
+
+            result
+        })
+    }
+}
+
+/*
+impl<'a, T: 'a + Pad + fmt::Debug + Clone> Iterator for &'a Ngrams<'a, T> {
+    type Item = Vec<&'a T>;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        self.fill_memory();
         let next_item = self.source.next();
 
         match next_item {
             None => None,
             Some(n) => {
-
                 let mut result = Vec::with_capacity(self.num);
 
                 for elem in &self.memory {
-                    result.push(elem.clone());
                 }
-
-                result.push(n.clone());
+                result.push(&n);
 
                 let _ = self.memory.pop_front();
                 self.memory.push_back(n.clone());
@@ -144,6 +166,7 @@ impl<'a, T: 'a + Pad + fmt::Debug + Clone> Iterator for Ngrams<'a, T> {
         }
     }
 }
+*/
 
 /// Implement this so `ngrams` knows how to pad the beginning and end of your input.
 ///
