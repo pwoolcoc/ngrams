@@ -2,6 +2,7 @@
 
 [![Build Status](https://travis-ci.org/pwoolcoc/ngrams.svg)](https://travis-ci.org/pwoolcoc/ngrams)
 [![Coverage Status](https://coveralls.io/repos/pwoolcoc/ngrams/badge.svg?branch=master&service=github)](https://coveralls.io/github/pwoolcoc/ngrams?branch=master)
+[![](https://meritbadge.herokuapp.com/ngrams)](https://crates.io/crates/ngrams)
 
 [Documentation](https://pwoolcoc.github.io/ngrams)
 
