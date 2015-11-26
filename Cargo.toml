@@ -17,3 +17,7 @@ clippy = { version = "0.0.23", optional = true }
 [features]
 default = []
 dev = ["clippy"]
+
+[dev-dependencies]
+rand = "~0.3.12"
+flate2 = "~0.2.11"
