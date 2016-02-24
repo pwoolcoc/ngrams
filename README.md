@@ -9,7 +9,7 @@
 This crate takes a sequence of tokens and generates an n-gram for it.
 For more information about n-grams, check wikipedia: https://en.wikipedia.org/wiki/N-gram
 
-*Note*: The canonical version of this crate is hosted on [Gitlab](https://gitlab.com/pwoolcoc/ngams)
+*Note*: The canonical version of this crate is hosted on [Gitlab](https://gitlab.com/pwoolcoc/ngrams)
 
 ## Usage
 
