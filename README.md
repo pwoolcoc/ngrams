@@ -9,6 +9,8 @@
 This crate takes a sequence of tokens and generates an n-gram for it.
 For more information about n-grams, check wikipedia: https://en.wikipedia.org/wiki/N-gram
 
+*Note*: The canonical version of this crate is hosted on [Gitlab](https://gitlab.com/pwoolcoc/ngams)
+
 ## Usage
 
 Probably the easiest way to use it is to use the iterator adaptor. If
