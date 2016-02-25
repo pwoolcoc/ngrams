@@ -8,6 +8,7 @@ pages:
   stage: deploy
   script:
     - cargo doc --verbose
+    - mkdir -p public/
     - cp -r target/doc/* public/
   artifacts:
     paths:
