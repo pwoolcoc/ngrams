@@ -1,4 +1,13 @@
 build:
-  script: "cargo build --release"
+  script: "cargo build --release && cargo test && cargo doc"
   tags:
     - rust
+pages:
+  stage: deploy
+  script:
+    - cp -r target/doc/* public/
+  artifacts:
+    paths:
+    - public
+  only:
+  - master
