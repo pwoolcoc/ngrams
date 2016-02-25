@@ -1,10 +1,13 @@
 build:
-  script: "cargo build --release && cargo test && cargo doc"
+  script:
+    - cargo build --verbose --release
+    - cargo test -- verbose
   tags:
     - rust
 pages:
   stage: deploy
   script:
+    - cargo doc --verbose
     - cp -r target/doc/* public/
   artifacts:
     paths:
