@@ -1,2 +1,4 @@
 build:
   script: "cargo build --release"
+  tags:
+    - rust
