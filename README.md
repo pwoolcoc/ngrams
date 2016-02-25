@@ -4,7 +4,7 @@
 [![Coverage Status](https://coveralls.io/repos/pwoolcoc/ngrams/badge.svg?branch=master&service=github)](https://coveralls.io/github/pwoolcoc/ngrams?branch=master)
 [![](https://meritbadge.herokuapp.com/ngrams)](https://crates.io/crates/ngrams)
 
-[Documentation](https://pwoolcoc.github.io/ngrams)
+[Documentation](https://pwoolcoc.gitlab.io/ngrams/ngrams)
 
 This crate takes a sequence of tokens and generates an n-gram for it.
 For more information about n-grams, check wikipedia: https://en.wikipedia.org/wiki/N-gram
