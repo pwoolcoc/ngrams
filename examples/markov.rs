@@ -93,7 +93,7 @@ impl Iterator for SentenceGenerator {
 }
 
 fn main() {
-    let chain = Markov::new("examples/eng_news_2005_1M-sentences.gz");
+    let chain = Markov::new("examples/eng_news_2005_100K-sentences.gz");
     for _ in 0..10 {
         println!("{:?}", chain.sentence_generator().collect::<Vec<_>>().join(" "));
     }

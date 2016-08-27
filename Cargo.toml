@@ -19,5 +19,6 @@ default = []
 dev = ["clippy"]
 
 [dev-dependencies]
-rand = "~0.3.12"
-flate2 = "~0.2.11"
+rand = "^0.3.12"
+flate2 = "^0.2.11"
+curl = "^0.3.5"
