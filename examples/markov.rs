@@ -1,12 +1,17 @@
+//! This is a just awful, awful implementation of a markov chain generator, but
+//! it serves the purpose, which is to use ngrams to generate subsequences of words
+//! in a corpus
+
 extern crate ngrams;
 extern crate rand;
 extern crate flate2;
+extern crate curl;
 
 use ngrams::Ngrams;
 use std::collections::HashMap;
-use std::fs::File;
-use std::io::{BufRead, BufReader};
+use std::io::{Cursor, BufRead, BufReader};
 use flate2::read::GzDecoder;
+use curl::easy::Easy;
 
 use rand::distributions::{Weighted, WeightedChoice, IndependentSample};
 
@@ -31,14 +36,27 @@ fn tokenize_sentence(sentence: String) -> Vec<String> {
 }
 
 impl Markov {
-    fn new(fname: &'static str) -> Markov {
+    fn new(url: &'static str) -> Markov {
         let mut map: HashMap<String, HashMap<String, u32>> = HashMap::new();
+        let mut handle = Easy::new();
+        let mut data = Vec::new();
+        handle.url(url).unwrap();
+        {
+            let mut transfer = handle.transfer();
+            transfer.write_function(|new_data| {
+                    data.extend_from_slice(new_data);
+                    Ok(new_data.len())
+            }).unwrap();
+            transfer.perform().unwrap();
+        }
         let file = BufReader::new(
-                        GzDecoder::new(
-                            File::open(fname).unwrap()).unwrap());
+                        GzDecoder::new(Cursor::new(data)
+                            ).unwrap());
+        println!("extracting sentences...");
         let sentences = file.lines().map(|a| a.unwrap()).map(extract_sentence).map(tokenize_sentence);
+        print!("Building map of ngrams...");
         for tokenized in sentences {
-            let grams = Ngrams::new(tokenized.into_iter(), 2);
+            let grams = Ngrams::new(tokenized.into_iter(), 2).pad();
             for gram in grams {
                 let first = gram[0].clone();
                 let second = gram[1].clone();
@@ -47,6 +65,7 @@ impl Markov {
                 *entry += 1;
             }
         }
+        println!("Done!");
         Markov {
             data: map
         }
@@ -93,7 +112,9 @@ impl Iterator for SentenceGenerator {
 }
 
 fn main() {
-    let chain = Markov::new("examples/eng_news_2005_100K-sentences.gz");
+    let url = "https://gitlab.com/pwoolcoc/ngrams/raw/master/examples/eng_news_2005_1M-sentences.gz";
+    println!("Generating markov chain from input data\n\n\t{}\n\nThis is gonna take a while...", url);
+    let chain = Markov::new(url);
     for _ in 0..10 {
         println!("{:?}", chain.sentence_generator().collect::<Vec<_>>().join(" "));
     }
