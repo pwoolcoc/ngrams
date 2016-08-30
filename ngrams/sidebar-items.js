@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Ngrams","Main data type, implements the logic on splitting and grouping n-grams"]],"trait":[["Ngram","Iterator adaptor, allows you to call the method `.ngrams(n)` on your iterator, as long as the `Item` of the `Iterator` fits the trait bound"],["Pad","Implement this so `ngrams` knows how to pad the beginning and end of your input."]]});
