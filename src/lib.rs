@@ -47,7 +47,6 @@
 #![cfg_attr(feature = "dev", plugin(clippy))]
 #![cfg_attr(feature = "dev", deny(clippy))]
 
-
 use std::fmt;
 use std::collections::VecDeque;
 
@@ -240,7 +239,7 @@ impl<'a, T: 'a + Pad + fmt::Debug + Clone> Iterator for Padded<'a, T> {
 
     fn next(&mut self) -> Option<Self::Item> {
         if self.remaining > 0 {
-            self.remaining -= self.remaining;
+            self.remaining -= 1;
             return Some(self.symbol.clone());
         }
 
@@ -256,7 +255,7 @@ impl<'a, T: 'a + Pad + fmt::Debug + Clone> Iterator for Padded<'a, T> {
             }
 
             if self.remaining > 0 {
-                self.remaining -= self.remaining;
+                self.remaining -= 1;
                 return Some(self.symbol.clone());
             }
 
